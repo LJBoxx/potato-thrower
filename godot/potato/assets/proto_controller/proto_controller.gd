@@ -48,6 +48,7 @@ var mouse_captured : bool = false
 var look_rotation : Vector2
 var move_speed : float = 0.0
 var freeflying : bool = false
+signal clear
 
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
@@ -55,7 +56,7 @@ var freeflying : bool = false
 @onready var camera = $Head/Camera3D
 
 @export var potato = preload("res://potato.tscn")
-@export var throw_velocity = 150.0
+@export var throw_velocity = 15.0
 @export var throw_offset = Vector3(0, 1, -1)
 
 func _ready() -> void:
@@ -89,7 +90,11 @@ func _physics_process(delta: float) -> void:
 		motion *= freefly_speed * delta
 		move_and_collide(motion)
 		return
-	
+		
+	if Input.is_action_just_pressed("clear"):
+		print("yey")
+		clear.emit()
+		
 	# Apply gravity to velocity
 	if has_gravity:
 		if not is_on_floor():
@@ -188,7 +193,7 @@ func throw():
 	var obj = potato.instantiate()
 	get_tree().root.add_child(obj)
 	obj.global_position = global_position + (transform.basis * throw_offset)
-	
+	self.clear.connect(obj.queue_free)
 	var direction = -camera.global_transform.basis.z
 	obj.linear_velocity = throw_velocity * direction
 	
