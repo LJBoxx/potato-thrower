@@ -54,12 +54,15 @@ signal clear
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
 @onready var camera = $Head/Camera3D
+@onready var audioo = $AudioStreamPlayer
 
 @export var potato = preload("res://potato.tscn")
 @export var throw_velocity = 15.0
 @export var throw_offset = Vector3(0, 1, -1)
 
 func _ready() -> void:
+	print(audioo)
+	print(get_children())
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
@@ -92,7 +95,7 @@ func _physics_process(delta: float) -> void:
 		return
 		
 	if Input.is_action_just_pressed("clear"):
-		print("yey")
+#		print("yey")
 		clear.emit()
 		
 	# Apply gravity to velocity
@@ -192,8 +195,8 @@ func check_input_mappings():
 func throw():
 	var obj = potato.instantiate()
 	get_tree().root.add_child(obj)
+	audioo.play(0.0)
 	obj.global_position = global_position + (transform.basis * throw_offset)
 	self.clear.connect(obj.queue_free)
 	var direction = -camera.global_transform.basis.z
-	obj.linear_velocity = throw_velocity * direction
-	
+	obj.linear_velocity = throw_velocity * direction * randf_range(0.5, 2)

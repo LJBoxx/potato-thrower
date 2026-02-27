@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://ccgwb4w2cm5qs" path="res://assets/concrete/Concrete042A_1K-PNG_Color.png" id="2_h2yge"]
 [ext_resource type="Texture2D" uid="uid://dd0jqn24s6bdd" path="res://assets/concrete/Concrete042A_1K-PNG_NormalGL.png" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://assets/proto_controller/proto_controller.tscn" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://dat52oy2l7h1q" path="res://adventurer.tscn" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://bub0gjbnvx155" path="res://man.tscn" id="5_lquwl"]
+[ext_resource type="AudioStream" uid="uid://k25x2i1s35u7" path="res://assets/pop1.mp3" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dat52oy2l7h1q" path="res://adventurer.tscn" id="5_lquwl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5vw27"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -780,6 +780,10 @@ metadata/_edit_lock_ = true
 
 [node name="ProtoController" parent="." instance=ExtResource("3_h2yge")]
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ProtoController"]
+stream = ExtResource("4_1bvp3")
+max_polyphony = 5
+
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 19.5, 0, -15.5)
 
@@ -972,10 +976,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0, 0)
 mesh = SubResource("ArrayMesh_di13e")
 skeleton = NodePath("")
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("4_1bvp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -5.5)
-
-[node name="CharacterBody3D2" parent="." instance=ExtResource("5_lquwl")]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, -6.5)
-
-[editable path="ProtoController"]
+[node name="CharacterBody3D" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
