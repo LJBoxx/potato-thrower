@@ -22,6 +22,7 @@ func spawn_random_npc():
 		npc = npc2
 	var npc_spawn = npc.instantiate()
 	add_child(npc_spawn)
+	npc_spawn.walk_direction = -1
 	npc_spawn.tree_exited.connect(_on_object_destroyed)
 
 func _on_object_destroyed():

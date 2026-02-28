@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://bn65ops7hrrj2"]
+[gd_scene load_steps=6 format=3 uid="uid://bn65ops7hrrj2"]
 
 [ext_resource type="Script" uid="uid://deh7m3j6knyog" path="res://spawner.gd" id="1_yp5lu"]
+[ext_resource type="PackedScene" uid="uid://dat52oy2l7h1q" path="res://adventurer.tscn" id="2_mcln3"]
+[ext_resource type="PackedScene" uid="uid://bub0gjbnvx155" path="res://man.tscn" id="3_bphdf"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_mcln3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ocbr"]
+albedo_color = Color(0, 0, 0, 1)
 
 [node name="spawner" type="Node3D"]
 script = ExtResource("1_yp5lu")
+npc1 = ExtResource("2_mcln3")
+npc2 = ExtResource("3_bphdf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_mcln3")
+surface_material_override/0 = SubResource("StandardMaterial3D_7ocbr")

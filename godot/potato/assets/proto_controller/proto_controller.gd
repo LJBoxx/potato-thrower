@@ -48,6 +48,7 @@ var mouse_captured : bool = false
 var look_rotation : Vector2
 var move_speed : float = 0.0
 var freeflying : bool = false
+var kills : int = 0
 signal clear
 
 ## IMPORTANT REFERENCES
@@ -61,8 +62,9 @@ signal clear
 @export var throw_offset = Vector3(0, 1, -1)
 
 func _ready() -> void:
-	print(audioo)
-	print(get_children())
+#	print(audioo)
+#	print(get_children())
+	Events.death.connect(_on_kill)
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
@@ -200,3 +202,6 @@ func throw():
 	self.clear.connect(obj.queue_free)
 	var direction = -camera.global_transform.basis.z
 	obj.linear_velocity = throw_velocity * direction * randf_range(0.5, 2)
+
+func _on_kill():
+	kills += 1 
