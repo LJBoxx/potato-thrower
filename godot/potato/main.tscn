@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=4 uid="uid://hc7e7bqh7fgn"]
+[gd_scene load_steps=53 format=4 uid="uid://hc7e7bqh7fgn"]
 
 [ext_resource type="Texture2D" uid="uid://ccgwb4w2cm5qs" path="res://assets/concrete/Concrete042A_1K-PNG_Color.png" id="2_h2yge"]
 [ext_resource type="Texture2D" uid="uid://dd0jqn24s6bdd" path="res://assets/concrete/Concrete042A_1K-PNG_NormalGL.png" id="3_1bvp3"]
@@ -89,6 +89,9 @@ normal_texture = ExtResource("3_1bvp3")
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_dg77c"]
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_4c57u")])
 texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_efxa6")])
+
+[sub_resource type="SystemFont" id="SystemFont_7mycd"]
+font_names = PackedStringArray("Javanese Text")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 size = Vector3(7.8, 3, 2.55)
@@ -780,10 +783,120 @@ top_level = true
 metadata/_edit_lock_ = true
 
 [node name="ProtoController" parent="." instance=ExtResource("3_h2yge")]
+throw_velocity = 30.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ProtoController"]
 stream = ExtResource("4_1bvp3")
 max_polyphony = 5
+
+[node name="CanvasLayer" type="CanvasLayer" parent="ProtoController"]
+
+[node name="Label" type="Label" parent="ProtoController/CanvasLayer"]
+offset_left = 948.0
+offset_top = 544.0
+offset_right = 1002.0
+offset_bottom = 567.0
+text = "Kills : 0"
+
+[node name="Panel" type="Panel" parent="ProtoController/CanvasLayer"]
+offset_right = 1150.0
+offset_bottom = 641.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ProtoController/CanvasLayer/Panel"]
+layout_mode = 0
+offset_right = 1148.0
+offset_bottom = 653.0
+alignment = 1
+
+[node name="Label" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_7mycd")
+theme_override_font_sizes/font_size = 40
+text = "SHOP!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="currency" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_7mycd")
+theme_override_font_sizes/font_size = 20
+text = "Kills usable : 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "10 kills"
+
+[node name="Button" type="Button" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Throw Speed +"
+
+[node name="Label" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Bought : 0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "20 kills"
+
+[node name="Button" type="Button" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Bigger Potato"
+
+[node name="Label" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Bought : 0"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "200 kills"
+
+[node name="Button" type="Button" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "MACHINEGUN"
+
+[node name="Label" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Bought : No"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Close (tab)"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Not enough kills !"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="ProtoController/CanvasLayer/Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "Max item bought !"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 19.5, 0, -15.5)
@@ -853,7 +966,7 @@ skeleton = NodePath("")
 transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 82.15, 0, -15.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.60625, 1.5, -0.2874999)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6062498, 1.5, -0.2874999)
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="large_buildingA" type="MeshInstance3D" parent="StaticBody3D3"]
@@ -983,3 +1096,8 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -101
 [node name="spawner2" parent="." instance=ExtResource("5_lquwl")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 95.5, 0.049999997, -0.004666567)
 script = ExtResource("6_7mycd")
+
+[connection signal="pressed" from="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer/Button" to="ProtoController" method="_on_buy_speed_pressed"]
+[connection signal="pressed" from="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer2/Button" to="ProtoController" method="_on_buy_size_pressed"]
+[connection signal="pressed" from="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer4/Button" to="ProtoController" method="_on_MACHINEGUN_pressed"]
+[connection signal="pressed" from="ProtoController/CanvasLayer/Panel/VBoxContainer/HBoxContainer3/Button" to="ProtoController" method="_on_button_pressed"]

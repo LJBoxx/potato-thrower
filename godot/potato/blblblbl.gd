@@ -2,24 +2,31 @@ extends CharacterBody3D
 
 @onready var bonesim = $RootNode/Armature/Skeleton3D/PhysicalBoneSimulator3D2
 @onready var SPEED = 3.0
+@onready var health = 100.0
 
 var ded = false
 var walk_direction = 1.0
 
 func _ready() -> void:
+	Events.pause.connect(_on_pause)
 	velocity.z = randf_range(-3.0, 3.0)
-	await get_tree().create_timer(90).timeout
+	await get_tree().create_timer(60).timeout
 	death()
+
+func _on_pause():
+	if !Events.is_paused:
+		set_physics_process(false)
+	else:
+		set_physics_process(true)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	Events.death.emit()
-	death()
+	health -= body.linear_velocity.length()
+	if health <= 0:
+		if !ded:
+			Events.death.emit()
+		death()
 	
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
-#	if not is_on_floor():
-#		velocity += get_gravity() * delta
-
 	if ded:
 		velocity.x = 0
 		velocity.z = 0
