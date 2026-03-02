@@ -52,7 +52,7 @@ var kills : int = 0
 var used_kills : int = 0
 var scale_potato : float = 1.0
 var speed_bought : int = 0
-var size_bought : int = 0
+var size_bought : bool = false
 var machinegun : bool = false
 signal clear
 
@@ -105,12 +105,13 @@ func _process(delta: float) -> void:
 			Events.is_paused = true
 			$CanvasLayer/Panel/VBoxContainer/currency.text = "Kills usable :" + str(kills - used_kills)
 			shop.show()
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			set_physics_process(true)
 			Events.is_paused = false
 			shop.hide()
-			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 			
 func _physics_process(delta: float) -> void:
 	# If freeflying, handle freefly and nothing else
@@ -144,10 +145,10 @@ func _physics_process(delta: float) -> void:
 		
 	if machinegun: # need to make a shop ! trade kills for skills >:3
 		if Input.is_action_pressed("throw"):
-			throw(false)
+			throw()
 	else:
 		if Input.is_action_just_pressed("throw"):
-			throw(true)
+			throw()
 	# Apply desired movement to velocity
 	if can_move:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
@@ -224,22 +225,21 @@ func check_input_mappings():
 		push_error("Freefly disabled. No InputAction found for input_freefly: " + input_freefly)
 		can_freefly = false
 
-func throw(big: int):
+func throw():
 	var obj : RigidBody3D
-	var peed = throw_velocity
-	if big:
+	var peed = throw_velocity + speed_bought
+	if size_bought:
 		obj = big_potato.instantiate()
-		peed = 5 * throw_velocity
 	else:
 		obj = potato.instantiate()
-		peed = throw_velocity
-	print(obj)
+#	print(obj)
 	get_tree().root.add_child(obj)
 	audioo.play(0.0)
 	obj.global_position = global_position + (transform.basis * throw_offset)
 	self.clear.connect(obj.queue_free)
 	var direction = -camera.global_transform.basis.z
-	obj.scale = Vector3(1.0, 1.0, 1.0) * scale_potato
+#	scale_potato += size_bought
+#	obj.scale = Vector3(1.0, 1.0, 1.0) * scale_potato
 	obj.linear_velocity = peed * direction * randf_range(0.5, 2)
 
 func _on_kill():
@@ -251,8 +251,8 @@ func _on_button_pressed() -> void:
 	set_physics_process(true)
 	Events.is_paused = false
 	shop.hide()
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func _on_buy_speed_pressed() -> void:
 	if (kills - used_kills) >= 10:
@@ -266,19 +266,23 @@ func _on_buy_speed_pressed() -> void:
 		$CanvasLayer/Panel/VBoxContainer/HBoxContainer5.hide()
 
 func _on_buy_size_pressed() -> void:
-	if (kills - used_kills) >= 20:
-		used_kills += 20 
-		size_bought += 1
+	if (kills - used_kills) >= 20 and !size_bought:
+		used_kills += 20
+		size_bought = true
 		$CanvasLayer/Panel/VBoxContainer/currency.text = "Kills usable :" + str(kills - used_kills)
-		$CanvasLayer/Panel/VBoxContainer/HBoxContainer2/Label.text = "Bought :" + str(size_bought)
+		$CanvasLayer/Panel/VBoxContainer/HBoxContainer2/Label.text = "Bought : Yes"
+	elif size_bought:
+		$CanvasLayer/Panel/VBoxContainer/HBoxContainer6.show()
+		await get_tree().create_timer(3).timeout
+		$CanvasLayer/Panel/VBoxContainer/HBoxContainer6.hide()
 	else:
 		$CanvasLayer/Panel/VBoxContainer/HBoxContainer5.show()
 		await get_tree().create_timer(3).timeout
 		$CanvasLayer/Panel/VBoxContainer/HBoxContainer5.hide()
 
 func _on_MACHINEGUN_pressed() -> void:
-	if (kills - used_kills) >= 10 and !machinegun:
-		used_kills += 10 
+	if (kills - used_kills) >= 200 and !machinegun:
+		used_kills += 200 
 		machinegun = true
 		$CanvasLayer/Panel/VBoxContainer/currency.text = "Kills usable :" + str(kills - used_kills)
 		$CanvasLayer/Panel/VBoxContainer/HBoxContainer4/Label.text = "Bought : Yes"

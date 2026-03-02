@@ -9,8 +9,8 @@ var walk_direction = 1.0
 
 func _ready() -> void:
 	Events.pause.connect(_on_pause)
-	velocity.z = randf_range(-3.0, 3.0)
-	await get_tree().create_timer(60).timeout
+	velocity.z = randf_range(-5.0, 5.0)
+	await get_tree().create_timer(67).timeout
 	death()
 
 func _on_pause():
