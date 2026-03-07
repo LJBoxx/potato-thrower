@@ -156,7 +156,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			toggle_big = true
 		
-	if machinegun: # need to make a shop ! trade kills for skills >:3
+	if machinegun and toggle_machingun: # need to make a shop ! trade kills for skills >:3
 		if Input.is_action_pressed("throw"):
 			throw()
 	else:
