@@ -54,6 +54,8 @@ var scale_potato : float = 1.0
 var speed_bought : int = 0
 var size_bought : bool = false
 var machinegun : bool = false
+var toggle_big : bool = true
+var toggle_machingun : bool = true
 signal clear
 
 ## IMPORTANT REFERENCES
@@ -142,6 +144,17 @@ func _physics_process(delta: float) -> void:
 			move_speed = sprint_speed
 	else:
 		move_speed = base_speed
+	
+	if Input.is_action_just_pressed("machinegunn"):
+		if !toggle_machingun:
+			machinegun = true
+		else:
+			machinegun = false
+	if Input.is_action_just_pressed("big_potat"):
+		if toggle_big:
+			toggle_big = false
+		else:
+			toggle_big = true
 		
 	if machinegun: # need to make a shop ! trade kills for skills >:3
 		if Input.is_action_pressed("throw"):
@@ -228,7 +241,7 @@ func check_input_mappings():
 func throw():
 	var obj : RigidBody3D
 	var peed = throw_velocity + speed_bought
-	if size_bought:
+	if size_bought and toggle_big:
 		obj = big_potato.instantiate()
 	else:
 		obj = potato.instantiate()
